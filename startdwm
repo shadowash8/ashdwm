@@ -11,8 +11,18 @@ dwmblocks &
 feh --bg-fill ~/Pictures/Wallpapers/initiald.png &
 picom &
 greenclip daemon &
+emacs-gtk+x11 --daemon &
+kdeconnectd &
 
-# 3. The dwm restart loop
+unclutter &
+
+export XSECURELOCK_SHOW_DATETIME=1
+export XSECURELOCK_PASSWORD_PROMPT=asterisks
+xss-lock -- sh -c "xsecurelock & sleep 0.5 && systemctl suspend" &
+
+xset s 300 300
+
+# The dwm restart loop
 while :; do
     ssh-agent dwm
 done

@@ -83,6 +83,7 @@ static const char *restartdwmcmd[] = { "pkill", "dwm", NULL };
 static const char *quitdwmcmd[] = { "pkill", "xinit", NULL };
 
 /* hardware commands */
+static const char *lockcmd[] = { "sh", "-c", "XSECURELOCK_SHOW_DATETIME=1 xsecurelock", NULL };
 static const char *mutecmd[]    = { "wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
 static const char *volupcmd[]   = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+5 dwmblocks", NULL };
 static const char *voldowncmd[] = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+5 dwmblocks", NULL };
@@ -96,6 +97,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_f,      spawn,          {.v = filescmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
+	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	
 	/* --- Navigation (Colemak-DH Home Row: n, e, i) --- */
