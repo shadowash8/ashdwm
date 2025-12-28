@@ -10,6 +10,7 @@ dunst &
 dwmblocks &
 feh --bg-fill ~/Pictures/Wallpapers/initiald.png &
 picom &
+greenclip daemon &
 
 # 3. The dwm restart loop
 while :; do
