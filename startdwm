@@ -1,7 +1,7 @@
 source ~/.zprofile
 
 # --- GTK Theme ---
-gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
 # --- QT Settings ---
@@ -16,6 +16,7 @@ greenclip daemon &
 emacs-gtk+x11 --daemon &
 kdeconnectd &
 /usr/libexec/lxqt-policykit-agent &
+libinput-gestures-setup start &
 
 unclutter &
 
