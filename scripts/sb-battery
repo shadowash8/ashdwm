@@ -1,37 +1,76 @@
 #!/bin/sh
 
-# Prints all batteries, their percentage remaining and an emoji corresponding
-# to charge status ($ for plugged up, # for discharging on battery, etc.).
+# SETTINGS
+LAST_PERCENT_FILE="/tmp/bat_last_percent"
+SHUTDOWN_LOCK="/tmp/bat_shutdown_lock"
 
 case $BLOCK_BUTTON in
-        3) notify-send "Battery module" "#: discharging
-!: not charging
-@: stagnant charge
-$: charging
-*: charged
-!!: battery very low!
-- Scroll to change adjust xbacklight." ;;
-        4) brightnessctl set 10%+ ;;
-        5) brightnessctl set 10%- ;;
-        6) setsid -f kitty -e "$EDITOR" "$0" ;;
+    3) notify-send "Battery module" "$(upower -i /org/freedesktop/UPower/devices/battery_BAT1)" ;;
+    4) brightnessctl set 10%+ ;;
+    5) brightnessctl set 10%- ;;
+    6) setsid -f kitty -e "$EDITOR" "$0" ;;
 esac
 
-# Loop through all attached batteries and format the info
 for battery in /sys/class/power_supply/BAT?*; do
-        # If non-first battery, print a space separator.
-        [ -n "${capacity+x}" ] && printf " "
-        # Sets up the status and capacity
-        case "$(cat "$battery/status" 2>&1)" in
-                "Full") status="* " ;;
-                "Discharging") status="# " ;;
-                "Charging") status="$ " ;;
-                "Not charging") status="! " ;;
-                "Unknown") status="! " ;;
-                *) exit 1 ;;
-        esac
-        capacity="$(cat "$battery/capacity" 2>&1)"
-        # Will make a warn variable if discharging and low
-        [ "$status" = "" ] && [ "$capacity" -le 25 ] && warn="!!"
-        # Prints the info
-        printf "%s%s%d%%" "$status" "$warn" "$capacity"; unset warn
+    status_raw=$(cat "$battery/status")
+    capacity=$(cat "$battery/capacity")
+
+    # 1. EMERGENCY SHUTDOWN (at 10%)
+    if [ "$status_raw" = "Discharging" ] && [ "$capacity" -le 10 ]; then
+        if [ ! -f "$SHUTDOWN_LOCK" ]; then
+            touch "$SHUTDOWN_LOCK"
+            (
+                notify-send -u critical "CRITICAL: 10% BATTERY" "Shutting down in 20s! Plug in now to cancel."
+                sleep 20
+                # Re-check status after 20 seconds
+                if [ "$(cat "$battery/status")" = "Discharging" ]; then
+                    notify-send -u critical "System" "Powering off now..."
+                    sudo shutdown -h now
+                else
+                    notify-send "Shutdown Aborted" "Charger detected."
+                fi
+                rm "$SHUTDOWN_LOCK"
+            ) &
+        fi
+    fi
+
+    # 2. LOW BATTERY NOTIFS (20% and below)
+    if [ "$status_raw" = "Discharging" ] && [ "$capacity" -le 20 ]; then
+        warn="!!"
+        last_percent=$(cat "$LAST_PERCENT_FILE" 2>/dev/null || echo 0)
+        if [ "$capacity" != "$last_percent" ]; then
+            notify-send -u critical "Battery Low" "Capacity: ${capacity}%"
+            echo "$capacity" > "$LAST_PERCENT_FILE"
+        fi
+    fi
+
+    # 3. RESET ON CHARGE
+    if [ "$status_raw" = "Charging" ] || [ "$status_raw" = "Full" ]; then
+        [ -f "$LAST_PERCENT_FILE" ] && rm "$LAST_PERCENT_FILE"
+        [ -f "$SHUTDOWN_LOCK" ] && rm "$SHUTDOWN_LOCK"
+    fi
+
+    # 4. TUNED (Optimized)
+    current_profile=$(tuned-adm active | awk '{print $NF}')
+    
+    if [ "$status_raw" = "Discharging" ]; then
+        if [ "$capacity" -le 20 ]; then
+            target="powersave"
+        else
+            target="balanced-battery"
+        fi
+    else
+        target="throughput-performance"
+    fi
+
+    # Only run sudo if the profile actually needs to change
+    if [ "$current_profile" != "$target" ]; then
+        sudo tuned-adm profile "$target"
+    fi
+
+    # Formatting for dwmblocks
+    case "$status_raw" in
+        "Full") status="* " ;; "Discharging") status="# " ;; "Charging") status="$ " ;; *) status="! " ;;
+    esac
+    printf "%s%s%d%%" "$status" "$warn" "$capacity"; unset warn
 done && printf "\\n"
