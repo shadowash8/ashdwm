@@ -108,7 +108,9 @@ static const Key keys[] = {
 	/* --- Navigation --- */
 	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } }, // Next window
 	{ MODKEY,                       XK_o,      focusstack,     {.i = -1 } }, // Prev window
-
+    { MODKEY|ControlMask,           XK_n,      shiftview,      {.i = -1 } }, // Next tag
+    { MODKEY|ControlMask,           XK_o,      shiftview,      {.i = +1 } }, // Prev tag
+ 
     /* --- Resizing --- */
 	{ MODKEY,                       XK_e,      setmfact,       {.f = -0.05} }, // Shrink master
 	{ MODKEY,                       XK_i,      setmfact,       {.f = +0.05} }, // Grow master
