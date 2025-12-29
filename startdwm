@@ -1,3 +1,5 @@
+source ~/.zprofile
+
 # --- GTK Theme ---
 gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
@@ -7,7 +9,7 @@ export QT_QPA_PLATFORM="xcb"
 export QT_QPA_PLATFORMTHEME="qt6ct"
 
 dunst &
-bash -c dwmblocks &
+dwmblocks &
 feh --bg-fill ~/Pictures/Wallpapers/initiald.png &
 picom &
 greenclip daemon &
@@ -24,6 +26,9 @@ xss-lock -- sh -c "xsecurelock & sleep 0.5 && systemctl suspend" &
 xset s 300 300
 
 # The dwm restart loop
+# Start the agent once for the whole session
+exec ssh-agent zsh -c '
 while :; do
-    ssh-agent dwm
+    dwm || break
 done
+'
