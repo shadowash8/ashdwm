@@ -5,6 +5,7 @@
 * dwm-sticky-6.5 - sticky windows
 * dwm-attachaside-6.6 - change the layout of new window added 
 * dwm-resetnmaster-6.3 - reset master
+* dwm-fibonacci-6.2 - fibonacci layouts
 */
 #include <X11/XF86keysym.h>
 
@@ -48,11 +49,14 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "[]=",      tile },
+	{ "><>",      NULL },
 	{ "[M]",      monocle },
+ 	{ "[@]",      spiral },
+ 	{ "[\\]",      dwindle },
 };
 
 /* key definitions */
@@ -119,6 +123,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,      setlayout,      {.v = &layouts[0]} }, // Tiled
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, // Floating
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} }, // Monocle
+	{ MODKEY,                       XK_d,      setlayout,      {.v = &layouts[3]} }, // Spiral
+	{ MODKEY|ShiftMask,             XK_d,      setlayout,      {.v = &layouts[4]} }, // Dwindle
 	{ MODKEY|ShiftMask,             XK_g,      setlayout,      {0} },                // Toggle last layout
 	{ MODKEY,                       XK_g,      togglefloating, {0} },
     { MODKEY,                       XK_s,      togglesticky,   {0} },
