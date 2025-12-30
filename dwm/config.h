@@ -10,6 +10,7 @@
 * dwm-pertag-6.2 - unique layout per tag
 * shiftview - switch tags
 * dwm-resizecorners-6.5 - resize from the nearest corner
+* dwm-fullscreen-6.2 - real fullscreen function
 */
 #include <X11/XF86keysym.h>
 
@@ -133,6 +134,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_d,      setlayout,      {.v = &layouts[4]} }, // Dwindle
 	{ MODKEY|ShiftMask,             XK_g,      setlayout,      {0} },                // Toggle last layout
 	{ MODKEY,                       XK_g,      togglefloating, {0} },
+    { MODKEY,                       XK_a,      fullscreen,     {0} },
     { MODKEY,                       XK_s,      togglesticky,   {0} },
 	
 	/* --- System Control --- */
