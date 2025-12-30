@@ -8,6 +8,8 @@
 * dwm-fibonacci-6.2 - fibonacci layouts
 * dwm-alwayscenter-20200625-f04cac6 - center floating windows
 * dwm-pertag-6.2 - unique layout per tag
+* shiftview - switch tags
+* dwm-resizecorners-6.5 - resize from the nearest corner
 */
 #include <X11/XF86keysym.h>
 
@@ -16,8 +18,8 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[] = { "Iosevka-Bold:size=11" };
-static const char dmenufont[]       = "Iosevka:size=11";
+static const char *fonts[] = { "Pragmasevka:size=11" };
+static const char dmenufont[]       = "Pragmasevka:size=11";
 
 /* Monochrome Palette */
 static const char col_black[]       = "#000000"; // Background
