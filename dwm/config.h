@@ -116,10 +116,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu=dmenu --term=kitty", NULL };
+static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu=dmenu --term=st", NULL };
 static const char *clipcmd[] = { "sh", "-c", "greenclip print | dmenu -s -l 20 -p 'Clipboard' | xargs -r -d'\\n' -I '{}' greenclip print '{}'", NULL };
 static const char *browsercmd[] = { "qutebrowser-profile", "--menu", "dmenu", NULL };
-static const char *termcmd[]  = { "kitty", NULL };
+static const char *termcmd[]  = { "st", NULL };
 static const char *filescmd[]  = { "pcmanfm-qt", NULL };
 static const char *emacscmd[]  = { "emacsclient", "-c", NULL };
 static const char *phonecmd[]  = { "dmenu-connect", NULL };
