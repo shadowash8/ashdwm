@@ -32,7 +32,7 @@ static const char *const autostart[] = {
 	"dwmblocks", NULL,
 	"greenclip", "daemon", NULL,
 	"emacs-gtk+x11", "--daemon", NULL,
-	"/usr/libexec/kdeconnectd", NULL,
+	"kdeconnectd", NULL,
 	"kdeconnect-indicator", NULL,
 	"libinput-gestures-setup", "start", NULL,
 
