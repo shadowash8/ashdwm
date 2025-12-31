@@ -10,7 +10,7 @@ export QT_QPA_PLATFORMTHEME="qt6ct"
 
 dunst &
 dwmblocks &
-feh --bg-fill ~/Pictures/Wallpapers/initiald.png &
+feh --bg-fill ~/Pictures/Wallpapers/r34_night_dark.jpg &
 picom &
 greenclip daemon &
 emacs-gtk+x11 --daemon &

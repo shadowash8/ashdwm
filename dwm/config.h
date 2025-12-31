@@ -84,9 +84,6 @@ static const char *termcmd[]  = { "kitty", NULL };
 static const char *filescmd[]  = { "pcmanfm-qt", NULL };
 static const char *emacscmd[]  = { "emacsclient", "-c", NULL };
 
-/* system commands */
-static const char *quitdwmcmd[] = { "pkill", "xinit", NULL };
-
 /* screenshot commands */
 static const char *shotcpycmd[]  = { "sh", "-c", "maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo", NULL };
 static const char *shotsavecmd[] = { "sh", "-c", "maim -s ~/Pictures/Screenshots/$(date +%s)_dwm.png && notify-send 'Screenshot' 'Saved to ~/Pictures/Screenshots' -i camera-photo", NULL };
@@ -99,6 +96,7 @@ static const char *voldowncmd[] = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO
 static const char *briup[]   = { "brightnessctl", "set", "+10%", NULL };
 static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
 
+#include "exitdwm.c"
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	/* --- Launchers --- */
@@ -139,8 +137,7 @@ static const Key keys[] = {
     { MODKEY,                       XK_s,      togglesticky,   {0} },
 	
 	/* --- System Control --- */
-	{ MODKEY|ShiftMask,             XK_s,      quit,          {0} },
-	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = quitdwmcmd } },
+	{ MODKEY|ShiftMask,             XK_q,      exitdwm,        {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
