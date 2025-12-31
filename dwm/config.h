@@ -90,6 +90,7 @@ static const char *browsercmd[] = { "qutebrowser-profile", "--menu", "dmenu", NU
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *filescmd[]  = { "pcmanfm-qt", NULL };
 static const char *emacscmd[]  = { "emacsclient", "-c", NULL };
+static const char *phonecmd[]  = { "dmenu-connect", NULL };
 
 /* screenshot commands */
 static const char *shotcpycmd[]  = { "sh", "-c", "maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo", NULL };
@@ -114,6 +115,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_f,      spawn,          {.v = filescmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
 	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = phonecmd } },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	
 	/* --- Navigation --- */
@@ -133,10 +135,10 @@ static const Key keys[] = {
     { MODKEY,                       XK_r,      resetnmaster,   {0}},  // Reset master
 
 	/* --- Layout Management --- */
-	{ MODKEY,                       XK_p,      setlayout,      {.v = &layouts[0]} }, // Tiled
+	{ MODKEY|ShiftMask,             XK_p,      setlayout,      {.v = &layouts[0]} }, // Tiled
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, // Floating
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} }, // Monocle
-	{ MODKEY,                       XK_d,      setlayout,      {.v = &layouts[3]} }, // Spiral
+	{ MODKEY|ShiftMask,             XK_d,      setlayout,      {.v = &layouts[3]} }, // Spiral
 	{ MODKEY|ShiftMask,             XK_d,      setlayout,      {.v = &layouts[4]} }, // Dwindle
 	{ MODKEY|ShiftMask,             XK_g,      setlayout,      {0} },                // Toggle last layout
 	{ MODKEY,                       XK_g,      togglefloating, {0} },

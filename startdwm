@@ -1,13 +1,19 @@
+# 1. Environment Variables FIRST
 source ~/.zprofile
+export QT_QPA_PLATFORM="xcb"
+export QT_QPA_PLATFORMTHEME="qt6ct"
+export QT_QPA_PLATFORMTHEME="qt5ct"
+export XSECURELOCK_SHOW_DATETIME=1
+export XSECURELOCK_PASSWORD_PROMPT=asterisks
 
-# --- GTK Theme ---
+# 2. Themes
 gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 
-# --- QT Settings ---
-export QT_QPA_PLATFORM="xcb"
-export QT_QPA_PLATFORMTHEME="qt6ct"
-
+# 3. Background Services
+/usr/libexec/xdg-desktop-portal &
+/usr/libexec/xdg-desktop-portal-lxqt &
+/usr/libexec/lxqt-policykit-agent &
 dunst &
 dwmblocks &
 feh --bg-fill ~/Pictures/Wallpapers/r34_night_dark.jpg &
@@ -15,21 +21,16 @@ picom &
 greenclip daemon &
 emacs-gtk+x11 --daemon &
 kdeconnectd &
-/usr/libexec/lxqt-policykit-agent &
+kdeconnect-indicator &
 libinput-gestures-setup start &
 
 unclutter &
-
-export XSECURELOCK_SHOW_DATETIME=1
-export XSECURELOCK_PASSWORD_PROMPT=asterisks
 xss-lock -- sh -c "xsecurelock & sleep 0.5 && systemctl suspend" &
-
 xset s 300 300
 
-# The dwm restart loop
-# Start the agent once for the whole session
+# 4. The DWM Loop
 exec ssh-agent zsh -c '
 while :; do
-    dwm || break
+    dwm 2> ~/.dwm.log || break
 done
 '
