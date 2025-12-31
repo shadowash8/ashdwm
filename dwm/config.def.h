@@ -114,6 +114,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_e,      exitdwm,       {0} },
+    {0}
 	{ MODKEY,                       XK_s,      togglesticky,   {0} },
 };
 

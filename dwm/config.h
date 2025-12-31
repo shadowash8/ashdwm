@@ -105,6 +105,19 @@ static const char *briup[]   = { "brightnessctl", "set", "+10%", NULL };
 static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
 
 #include "exitdwm.c"
+/* keybinds */
+/* Layout Layer */
+static Key keyseq_layout[] = {
+	/* modifier      key        function        argument */
+	{ 0,             XK_1,      setlayout,      {.v = &layouts[0]} }, // Tile
+	{ 0,             XK_2,      setlayout,      {.v = &layouts[1]} }, // Floating
+	{ 0,             XK_3,      setlayout,      {.v = &layouts[2]} }, // Monocle
+	{ 0,             XK_4,      setlayout,      {.v = &layouts[3]} }, // Spiral
+	{ 0,             XK_5,      setlayout,      {.v = &layouts[4]} }, // Dwindle
+	{ 0,             XK_g,      setlayout,      {0} },                // Toggle Last
+	{0} 
+};
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	/* --- Launchers --- */
@@ -135,12 +148,7 @@ static const Key keys[] = {
     { MODKEY,                       XK_r,      resetnmaster,   {0}},  // Reset master
 
 	/* --- Layout Management --- */
-	{ MODKEY|ShiftMask,             XK_p,      setlayout,      {.v = &layouts[0]} }, // Tiled
-	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, // Floating
-	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} }, // Monocle
-	{ MODKEY|ShiftMask,             XK_d,      setlayout,      {.v = &layouts[3]} }, // Spiral
-	{ MODKEY|ShiftMask,             XK_d,      setlayout,      {.v = &layouts[4]} }, // Dwindle
-	{ MODKEY|ShiftMask,             XK_g,      setlayout,      {0} },                // Toggle last layout
+    { MODKEY|ShiftMask,             XK_s,      keypress_other, {.v = keyseq_layout} }, // Layout Layer
 	{ MODKEY,                       XK_g,      togglefloating, {0} },
     { MODKEY,                       XK_a,      fullscreen,     {0} },
     { MODKEY,                       XK_s,      togglesticky,   {0} },
@@ -179,6 +187,8 @@ static const Key keys[] = {
 	{ 0,             XF86XK_AudioRaiseVolume,  spawn,          {.v = volupcmd } },
     { 0,             XF86XK_MonBrightnessUp,   spawn,          {.v = briup } },
     { 0,             XF86XK_MonBrightnessDown, spawn,          {.v = bridown } },
+
+    {0}
 };
 
 /* button definitions */
