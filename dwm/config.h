@@ -144,6 +144,7 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *filescmd[]  = { "pcmanfm-qt", NULL };
 static const char *emacscmd[]  = { "emacsclient", "-c", NULL };
 static const char *phonecmd[]  = { "dmenu-connect", NULL };
+static const char *websearchcmd[]  = { "dmenu-websearch", NULL };
 
 /* screenshot commands */
 static const char *shotcpycmd[]  = { "sh", "-c", "maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo", NULL };
@@ -220,6 +221,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
 	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = phonecmd } },
+	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = websearchcmd } },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	
 	/* --- Navigation --- */
