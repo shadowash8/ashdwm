@@ -19,7 +19,6 @@
 */
 
 #include <X11/XF86keysym.h>
-#include "fibonacci.c"
 #include "exitdwm.c"
 
 /* autostart */
@@ -57,6 +56,11 @@ static const char *const autostart[] = {
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappih    = 7;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 7;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 7;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 7;       /* vert outer gap between windows and screen edge */
+static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;    /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
@@ -100,16 +104,28 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
+#define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 
+#include "vanitygaps.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },
-	{ "><>",      NULL },
+	{ "[]=",      tile },    /* first entry is default */
+	{ "><>",      NULL },   
 	{ "[M]",      monocle },
- 	{ "[@]",      spiral },
- 	{ "[\\]",      dwindle },
-};
+	{ "[@]",      spiral },
+	{ "|M|",      centeredmaster },
+	{ "H[]",      deck },
+	{ "TTT",      bstack },
+	{ "===",      bstackhoriz },
+	{ "HHH",      grid },
+	{ "###",      nrowgrid },
+	{ "---",      horizgrid },
+	{ ":::",      gaplessgrid },
+	{ "[\\]",     dwindle },
+	{ ">M>",      centeredfloatingmaster },
+	{ NULL,       NULL },
 
+};
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
@@ -146,13 +162,52 @@ static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
 /* Layout Layer */
 static Key keyseq_layout[] = {
 	/* modifier      key        function        argument */
-	{ 0,             XK_1,      setlayout,      {.v = &layouts[0]} }, // Tile
-	{ 0,             XK_2,      setlayout,      {.v = &layouts[1]} }, // Floating
-	{ 0,             XK_3,      setlayout,      {.v = &layouts[2]} }, // Monocle
-	{ 0,             XK_4,      setlayout,      {.v = &layouts[3]} }, // Spiral
-	{ 0,             XK_5,      setlayout,      {.v = &layouts[4]} }, // Dwindle
-	{ 0,             XK_g,      setlayout,      {0} },                // Toggle Last
-	{0} 
+	{ 0,             XK_1,      setlayout,      {.v = &layouts[0]}  }, // Tile
+	{ 0,             XK_2,      setlayout,      {.v = &layouts[1]}  }, // Floating
+	{ 0,             XK_3,      setlayout,      {.v = &layouts[2]}  }, // Monocle
+	{ 0,             XK_4,      setlayout,      {.v = &layouts[3]}  }, // Spiral
+	{ 0,             XK_5,      setlayout,      {.v = &layouts[4]}  }, // Centeredmaster
+	{ 0,             XK_6,      setlayout,      {.v = &layouts[5]}  }, // Deck
+	{ 0,             XK_7,      setlayout,      {.v = &layouts[6]}  }, // Bstack
+	{ 0,             XK_8,      setlayout,      {.v = &layouts[7]}  }, // Bstackhoriz
+	{ 0,             XK_9,      setlayout,      {.v = &layouts[8]}  }, // Grid
+	{ 0,             XK_0,      setlayout,      {.v = &layouts[9]}  }, // Nrowgrid
+	{ 0,             XK_minus,  setlayout,      {.v = &layouts[10]} }, // Horizgrid
+	{ 0,             XK_equal,  setlayout,      {.v = &layouts[11]} }, // Gaplessgrid
+	{ 0,             XK_m,      setlayout,      {.v = &layouts[12]} }, // Dwindle 
+	{ 0,             XK_f,      setlayout,      {.v = &layouts[13]} }, // Centeredfloating
+	{ 0,             XK_g,      setlayout,      {0} },                 // Toggle Last
+	{ 0,             0,         NULL,           {0} } 
+};
+
+/* Gaps & Resizing Layer */
+static Key keyseq_gaps[] = {
+	/* modifier      key        function        argument */
+	/* Total Gaps (Overall) */
+	{ 0,             XK_n,      incrgaps,       {.i = +3 } },
+	{ 0,             XK_e,      incrgaps,       {.i = -3 } },
+
+	/* Inner Gaps (Horizontal/Vertical) */
+	{ 0,             XK_i,      incrigaps,      {.i = +3 } },
+	{ 0,             XK_o,      incrogaps,      {.i = +3 } },
+	{ ShiftMask,     XK_i,      incrihgaps,     {.i = +3 } }, // Inner Horiz
+	{ ShiftMask,     XK_o,      incrivgaps,     {.i = +3 } }, // Inner Vert
+
+	/* Outer Gaps (Horizontal/Vertical) */
+	{ 0,             XK_h,      incrohgaps,     {.i = +3 } }, // Outer Horiz
+	{ 0,             XK_l,      incrovgaps,     {.i = +3 } }, // Outer Vert
+
+	/* Cfacts (Window Weight / Size) */
+	{ ControlMask,   XK_n,      setcfact,       {.f = +0.25} },
+	{ ControlMask,   XK_e,      setcfact,       {.f = -0.25} },
+	{ ControlMask,   XK_r,      setcfact,       {.f =  0.00} },
+
+	/* Control & Reset */
+	{ 0,             XK_r,      defaultgaps,    {0} },
+	{ 0,             XK_g,      togglegaps,     {0} },
+	{ 0,             XK_Return, zoom,           {0} },
+	
+	{ 0,             0,         NULL,           {0} }
 };
 
 static const Key keys[] = {
@@ -186,7 +241,10 @@ static const Key keys[] = {
 
 	/* --- Layout Management --- */
     { MODKEY|ShiftMask,             XK_s,      keypress_other, {.v = keyseq_layout} }, // Layout Layer
+    { MODKEY|ControlMask,           XK_z,      keypress_other, {.v = keyseq_gaps}   }, // Gaps Layer
 	{ MODKEY,                       XK_g,      togglefloating, {0} },
+	{ MODKEY,                       XK_minus,  incrgaps,       {.i = +3 } },
+	{ MODKEY,                       XK_equal,  incrgaps,       {.i = -3 } },
     { MODKEY,                       XK_a,      fullscreen,     {0} },
     { MODKEY,                       XK_s,      togglesticky,   {0} },
 	
