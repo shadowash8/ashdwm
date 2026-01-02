@@ -5,7 +5,6 @@
 * dwm-sticky-6.5 - sticky windows
 * dwm-attachaside-6.6 - change the layout of new window added 
 * dwm-resetnmaster-6.3 - reset master
-* dwm-fibonacci-6.2 - fibonacci layouts
 * dwm-alwayscenter-20200625-f04cac6 - center floating windows
 * dwm-pertag-6.2 - unique layout per tag
 * shiftview - switch tags
@@ -17,6 +16,7 @@
 * dwm-systray-6.6 - add systray in dwm bar
 * dwm-exitmenu-6.3 - add a exit menu in dwm
 * dwm-attachbelow-toggleable-6.2 - attach new window below the current stack
+* dwm-taglayouts-6.4 - define layout per tag
 */
 
 #include <X11/XF86keysym.h>
@@ -88,6 +88,7 @@ static const char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+static const int taglayouts[] = { 0, 2, 5, 1, 7, 8, 0, 0, 0 };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -125,7 +126,6 @@ static const Layout layouts[] = {
 	{ "[\\]",     dwindle },
 	{ ">M>",      centeredfloatingmaster },
 	{ NULL,       NULL },
-
 };
 /* key definitions */
 #define MODKEY Mod4Mask
