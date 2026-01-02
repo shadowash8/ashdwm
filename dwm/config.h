@@ -16,6 +16,7 @@
 * dwm-cool_autostart-6.5 - use autostart inside dwm itself!
 * dwm-systray-6.6 - add systray in dwm bar
 * dwm-exitmenu-6.3 - add a exit menu in dwm
+* dwm-attachbelow-toggleable-6.2 - attach new window below the current stack
 */
 
 #include <X11/XF86keysym.h>
