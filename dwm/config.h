@@ -88,7 +88,7 @@ static const char *colors[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
-static const int taglayouts[] = { 0, 2, 5, 1, 7, 8, 0, 0, 0 };
+static const int taglayouts[] = { 0, 2, 5, 1, 11, 9, 0, 0, 0 };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -155,7 +155,7 @@ static const char *shotsavecmd[] = { "sh", "-c", "maim -s ~/Pictures/Screenshots
 /* hardware commands */
 static const char *lockcmd[] = { "sh", "-c", "XSECURELOCK_SHOW_DATETIME=1 xsecurelock", NULL };
 static const char *mutecmd[]    = { "sh", "-c", "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+4 dwmblocks", NULL };
-static const char *volupcmd[]   = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+4 dwmblocks", NULL };
+static const char *volupcmd[]   = { "sh", "-c", "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+4 dwmblocks", NULL };
 static const char *voldowncmd[] = { "sh", "-c", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+4 dwmblocks", NULL };
 static const char *briup[]   = { "brightnessctl", "set", "+10%", NULL };
 static const char *bridown[] = { "brightnessctl", "set", "10%-", NULL };
