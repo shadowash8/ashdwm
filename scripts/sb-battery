@@ -16,11 +16,11 @@ for battery in /sys/class/power_supply/BAT?*; do
     capacity=$(cat "$battery/capacity")
 
     # 1. EMERGENCY SHUTDOWN (at 10%)
-    if [ "$status_raw" = "Discharging" ] && [ "$capacity" -le 10 ]; then
+    if [ "$status_raw" = "Discharging" ] && [ "$capacity" -le 250 ]; then
         if [ ! -f "$SHUTDOWN_LOCK" ]; then
             touch "$SHUTDOWN_LOCK"
             (
-                notify-send -u critical "CRITICAL: 10% BATTERY" "Shutting down in 20s! Plug in now to cancel."
+                notify-send -u critical "CRITICAL: 20% BATTERY" "Shutting down in 20s! Plug in now to cancel."
                 sleep 20
                 # Re-check status after 20 seconds
                 if [ "$(cat "$battery/status")" = "Discharging" ]; then
@@ -34,8 +34,8 @@ for battery in /sys/class/power_supply/BAT?*; do
         fi
     fi
 
-    # 2. LOW BATTERY NOTIFS (20% and below)
-    if [ "$status_raw" = "Discharging" ] && [ "$capacity" -le 20 ]; then
+    # 2. LOW BATTERY NOTIFS (40% and below)
+    if [ "$status_raw" = "Discharging" ] && [ "$capacity" -le 40 ]; then
         warn="!!"
         last_percent=$(cat "$LAST_PERCENT_FILE" 2>/dev/null || echo 0)
         if [ "$capacity" != "$last_percent" ]; then
@@ -54,7 +54,7 @@ for battery in /sys/class/power_supply/BAT?*; do
     current_profile=$(tuned-adm active | awk '{print $NF}')
     
     if [ "$status_raw" = "Discharging" ]; then
-        if [ "$capacity" -le 20 ]; then
+        if [ "$capacity" -le 30 ]; then
             target="powersave"
         else
             target="balanced-battery"
