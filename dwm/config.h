@@ -144,17 +144,19 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 #define STATUSBAR "dwmblocks"
+#define TERMINAL "st"
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu=dmenu --term=st", NULL };
+static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu=dmenu --term=" TERMINAL, NULL };
 static const char *clipcmd[] = { "sh", "-c", "greenclip print | dmenu -s -l 20 -p 'Clipboard' | xargs -r -d'\\n' -I '{}' greenclip print '{}'", NULL };
 static const char *browsercmd[] = { "qutebrowser-profile", "--menu", "dmenu", NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { TERMINAL, NULL };
 static const char *filescmd[]  = { "pcmanfm-qt", NULL };
 static const char *emacscmd[]  = { "emacsclient", "-c", NULL };
 static const char *phonecmd[]  = { "dmenu-connect", NULL };
 static const char *websearchcmd[]  = { "dmenu-websearch", NULL };
+static const char *musiccmd[]  = { TERMINAL, "-e", "rmpc", NULL };
 
 /* screenshot commands */
 static const char *shotcpycmd[]  = { "sh", "-c", "maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo", NULL };
@@ -232,6 +234,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
 	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = phonecmd } },
+	{ MODKEY,                       XK_m,      spawn,          {.v = musiccmd } },
 	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = websearchcmd } },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	
@@ -246,9 +249,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_i,      setmfact,       {.f = +0.05} }, // Grow master
 
 	/* --- Master Area --- */
-	{ MODKEY,                       XK_m,      incnmaster,     {.i = +1 } }, // More windows in master
-	{ MODKEY|ControlMask,           XK_m,      incnmaster,     {.i = -1 } }, // Fewer windows in master
-	{ MODKEY,                       XK_z,      zoom,           {0} },        // Push window to master
+	{ MODKEY,                       XK_z,      incnmaster,     {.i = +1 } }, // More windows in master
+	{ MODKEY|ControlMask,           XK_z,      incnmaster,     {.i = -1 } }, // Fewer windows in master
+	{ MODKEY|ShiftMask,             XK_z,      zoom,           {0} },        // Push window to master
     { MODKEY,                       XK_r,      resetnmaster,   {0}},  // Reset master
 
 	/* --- Layout Management --- */
