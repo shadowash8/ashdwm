@@ -8,6 +8,11 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 export XSECURELOCK_SHOW_DATETIME=1
 export XSECURELOCK_PASSWORD_PROMPT=asterisks
 
+# Default Apps
+xdg-mime default sxiv.desktop image/jpeg image/png &
+xdg-mime default qutebrowser-profile.desktop text/html x-scheme-handler/http x-scheme-handler/https &
+xdg-mime default pcmanfm-qt.desktop inode/directory
+
 exec ssh-agent zsh -c '
 while :; do
     dwm 2> ~/.dwm.log || break
