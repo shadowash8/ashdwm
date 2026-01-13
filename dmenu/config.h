@@ -8,7 +8,7 @@ static const float menu_height_ratio = 4.0f;  /* This is the ratio used in the o
 static int fuzzy  = 1;                      /* -F  option; if 0, dmenu doesn't use fuzzy matching */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
-	"Pragmasevka:pixelsize=16:antialias=true:autohint=true"
+	"Iosevka:pixelsize=16:antialias=true:autohint=true"
 };
 static const char *prompt      = "Run:";      /* -p  option; prompt to the left of input field */
 static const char *colors[SchemeLast][2] = {

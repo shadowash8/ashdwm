@@ -72,8 +72,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
-static const char *fonts[] = { "Pragmasevka:pixelsize=16:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Pragmasevka:pixelsize=16:antialias=true:autohint=true";
+static const char *fonts[] = { "Iosevka:pixelsize=16:antialias=true:autohint=true" };
+static const char dmenufont[]       = "Iosevka:pixelsize=16:antialias=true:autohint=true";
 
 /* Monochrome Palette */
 static const char col_black[]       = "#000000"; // Background
@@ -147,7 +147,7 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "kitty"
+#define TERMINAL "st"
 
 /* commands */
 static char dmenumon[2] = "0"; 
@@ -165,6 +165,7 @@ static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 /* screenshot commands */
 static const char *shotcpycmd[]  = SHCMD("maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo");
 static const char *shotsavecmd[] = SHCMD("mkdir -p ~/Pictures/Screenshots && maim -s ~/Pictures/Screenshots/$(date +%s)_dwm.png && notify-send 'Screenshot' 'Saved to Screenshots' -i camera-photo");
+static const char *ocrcmd[] = SHCMD("maim -s /tmp/ocr.png && tesseract /tmp/ocr.png - | xclip -selection clipboard && notify-send 'OCR' 'Text copied to clipboard' -i edit-paste && rm /tmp/ocr.png");
 
 /* hardware commands */
 static const char *lockcmd[]     = SHCMD("XSECURELOCK_SHOW_DATETIME=1 xsecurelock");
@@ -283,6 +284,7 @@ static const Key keys[] = {
 	/* --- Screenshot --- */
     { 0,                    XK_Print,  spawn,          {.v = shotcpycmd } },
     { ControlMask,          XK_Print,  spawn,          {.v = shotsavecmd } },
+    { ShiftMask,            XK_Print,  spawn,          {.v = ocrcmd } },
 
 	/* --- Tag Keys --- */
 	TAGKEYS(                        XK_1,                      0)
