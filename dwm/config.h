@@ -31,7 +31,7 @@ static const char *const autostart[] = {
 	"/usr/libexec/lxqt-policykit-agent", NULL,
 
 	/* 2. Appearance & Desktop */
-	"feh", "--bg-fill", "/home/ashwin/Pictures/Wallpapers/r34_night_dark.jpg", NULL,
+	"feh", "--bg-fill", "/home/ashwin/.cache/current_wallpaper", NULL,
 	"picom", NULL,
 	"unclutter", NULL,
 
@@ -56,8 +56,8 @@ static const char *const autostart[] = {
 };
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
+static unsigned int borderpx  = 2;        /* border pixel of windows */
+static unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 7;        /* horiz inner gap between windows */
 static const unsigned int gappiv    = 7;        /* vert inner gap between windows */
 static const unsigned int gappoh    = 7;        /* horiz outer gap between windows and screen edge */
@@ -68,30 +68,30 @@ static const unsigned int systrayonleft = 0;    /* 0: systray in the right corne
 static const unsigned int systrayspacing = 7;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
+static int showbar            = 1;        /* 0 means no bar */
+static int topbar             = 1;        /* 0 means bottom bar */
 static const int vertpad            = 0;        /* vertical padding of bar */
 static const int sidepad            = 0;        /* horizontal padding of bar */
-static const char *fonts[] = { "Iosevka:pixelsize=16:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Iosevka:pixelsize=16:antialias=true:autohint=true";
+static char font[]            = "Iosevka:pixelsize=16:antialias=true:autohint=true";
+static const char *fonts[]          = { font };
+static char dmenufont[]       = "Iosevka:pixelsize=16:antialias=true:autohint=true";
 
-/* Monochrome Palette */
-static const char col_black[]       = "#000000"; // Background
-static const char col_dark_gray[]   = "#222222"; // Inactive border
-static const char col_gray[]        = "#bbbbbb"; // Inactive text
-static const char col_white[]       = "#ffffff"; // Active text / Active border
+static char normbgcolor[]           = "#222222";
+static char normbordercolor[]       = "#444444";
+static char normfgcolor[]           = "#bbbbbb";
+static char selfgcolor[]            = "#eeeeee";
+static char selbordercolor[]        = "#005577";
+static char selbgcolor[]            = "#005577";
 
-static const char *colors[][3]      = {
-	/*              fg          bg         border   */
-	[SchemeNorm] = { col_white,  col_black, col_dark_gray },
-	[SchemeSel]  = { col_white, col_black, col_gray },
-
-    /* for bar --> {text, background, null} */
-    [SchemeStatus]  = { col_white, col_black,  col_gray }, /* status R */
-    [SchemeTagsSel]  = { col_black, col_white,  col_black  }, /* tag L selected */
-    [SchemeTagsNorm]  = { col_gray, col_black,  col_black  }, /* tag L unselected */
-    [SchemeInfoSel]  = { col_white, col_black,  col_black  }, /* info M selected */
-    [SchemeInfoNorm]  = { col_gray, col_black,  col_black  }, /* info M unselected */
+static char *colors[][3] = {
+       /*               fg           bg           border   */
+       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+       [SchemeStatus]  = { normfgcolor, normbgcolor,  "#000000"  },
+       [SchemeTagsSel]  = { selfgcolor, selbgcolor,  "#000000"  },
+       [SchemeTagsNorm]  = { normfgcolor, normbgcolor,  "#000000"  },
+       [SchemeInfoSel]  = { selfgcolor, selbgcolor,  "#000000"  },
+       [SchemeInfoNorm]  = { normfgcolor, normbgcolor,  "#000000"  },
 };
 
 /* tagging */
@@ -108,9 +108,9 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static int nmaster     = 1;    /* number of clients in master area */
+static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
@@ -134,6 +134,27 @@ static const Layout layouts[] = {
 	{ "[\\]",     dwindle },
 	{ ">M>",      centeredfloatingmaster },
 	{ NULL,       NULL },
+};
+
+/*
+ * Xresources preferences to load at startup
+ */
+ResourcePref resources[] = {
+		{ "font",               STRING,  &font },
+		{ "dmenufont",          STRING,  &dmenufont },
+		{ "normbgcolor",        STRING,  &normbgcolor },
+		{ "normbordercolor",    STRING,  &normbordercolor },
+		{ "normfgcolor",        STRING,  &normfgcolor },
+		{ "selbgcolor",         STRING,  &selbgcolor },
+		{ "selbordercolor",     STRING,  &selbordercolor },
+		{ "selfgcolor",         STRING,  &selfgcolor },
+		{ "borderpx",          	INTEGER, &borderpx },
+		{ "snap",          		INTEGER, &snap },
+		{ "showbar",          	INTEGER, &showbar },
+		{ "topbar",          	INTEGER, &topbar },
+		{ "nmaster",          	INTEGER, &nmaster },
+		{ "resizehints",       	INTEGER, &resizehints },
+		{ "mfact",      	 	FLOAT,   &mfact },
 };
 
 /* key definitions */
