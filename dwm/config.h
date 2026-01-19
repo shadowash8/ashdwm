@@ -31,7 +31,9 @@ static const char *const autostart[] = {
 	"/usr/libexec/lxqt-policykit-agent", NULL,
 
 	/* 2. Appearance & Desktop */
-	"feh", "--bg-fill", "/home/ashwin/.cache/current_wallpaper", NULL,
+    "sh", "-c", "cat ~/.cache/wal/sequences", NULL,
+	"sh", "-c", "feh --bg-fill $(cat ~/.cache/wal/wal)", NULL,
+    "sh", "-c", "xrdb -merge ~/.Xresources", NULL,
 	"picom", NULL,
 	"unclutter", NULL,
 
@@ -45,13 +47,13 @@ static const char *const autostart[] = {
 	"libinput-gestures-setup", "start", NULL,
 
 	/* 4. Screen Lock & Power */
-	"xset", "s", "300", "300", NULL,
-	"sh", "-c", "xss-lock -- xsecurelock", NULL,
+    "xset", "s", "300", NULL,
+    /* 2. Lock the screen AND turn off the monitor when the timer hits */
+    "xss-lock", "-l", "--", "sh", "-c", "i3lock && xset dpms force off", NULL,
 
 	/* 5. Gsettings (Theme forcing) */
 	"sh", "-c", "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'", NULL,
 	"sh", "-c", "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'", NULL,
-
 
     "sh", "-c", "xrdb ~/.Xresources && xdotool key --clearmodifiers super+control+shift+q && pidof st | xargs -r kill -USR1", NULL,
 
@@ -185,12 +187,13 @@ static const char *phonecmd[]     = SHCMD("connect --menu dmenu");
 static const char *websearchcmd[] = SHCMD("websearch --menu dmenu");
 static const char *notescmd[] = SHCMD("notes --menu dmenu");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
-static const char *wallpapercmd[]     = { "wallpaper", NULL };
+static const char *wallpapercmd[]     = { "walmenu", NULL };
 
 /* screenshot commands */
 static const char *shotcpycmd[]  = SHCMD("maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo");
-static const char *shotsavecmd[] = SHCMD("mkdir -p ~/Pictures/Screenshots && maim -s ~/Pictures/Screenshots/$(date +%s)_dwm.png && notify-send 'Screenshot' 'Saved to Screenshots' -i camera-photo");
+static const char *shotsavecmd[] = SHCMD("screenshot");
 static const char *ocrcmd[] = SHCMD("maim -s /tmp/ocr.png && tesseract /tmp/ocr.png - | xclip -selection clipboard && notify-send 'OCR' 'Text copied to clipboard' -i edit-paste && rm /tmp/ocr.png");
+static const char *colpickcmd[] = SHCMD("screenshot color");
 
 /* hardware commands */
 static const char *lockcmd[]     = SHCMD("XSECURELOCK_SHOW_DATETIME=1 xsecurelock");
@@ -312,6 +315,7 @@ static const Key keys[] = {
     { 0,                    XK_Print,  spawn,          {.v = shotcpycmd } },
     { ControlMask,          XK_Print,  spawn,          {.v = shotsavecmd } },
     { ShiftMask,            XK_Print,  spawn,          {.v = ocrcmd } },
+    { ControlMask|ShiftMask,XK_Print,  spawn,          {.v = colpickcmd } },
 
 	/* --- Tag Keys --- */
 	TAGKEYS(                        XK_1,                      0)

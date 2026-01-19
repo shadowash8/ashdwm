@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# update bg
+feh --bg-fill $(cat ~/.cache/wal/wal) &
+
+# update dwm
+xdotool key --clearmodifiers super+control+shift+q
+
+# update qutebrowser colors
+~/.config/scripts/qute-reload &
+
+# update emacs colors
+emacsclient -e '(load-theme (quote minimal-matugen) t)' &
+
+# update firefox colors
+pywalfox update &
+
