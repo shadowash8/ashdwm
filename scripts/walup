@@ -10,7 +10,7 @@ xdotool key --clearmodifiers super+control+shift+q
 ~/.config/scripts/qute-reload &
 
 # update emacs colors
-emacsclient -e '(load-theme (quote minimal-matugen) t)' &
+emacsclient -e '(my/reload-xresources-theme)' &
 
 # update firefox colors
 pywalfox update &
