@@ -95,7 +95,7 @@ static char *colors[][3] = {
        [SchemeStatus]  = { normfgcolor, normbgcolor,  "#000000"  },
        [SchemeTagsSel]  = { selfgcolor, selbgcolor,  "#000000"  },
        [SchemeTagsNorm]  = { normfgcolor, normbgcolor,  "#000000"  },
-       [SchemeInfoSel]  = { normfgcolor, normbgcolor,  "#000000"  },
+       [SchemeInfoSel]  = { selfgcolor, selbgcolor,  "#000000"  },
        [SchemeInfoNorm]  = { normfgcolor, normbgcolor,  "#000000"  },
 };
 
