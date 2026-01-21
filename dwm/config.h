@@ -173,13 +173,13 @@ ResourcePref resources[] = {
 
 /* helper for spawning shell commands */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "st"
+#define TERMINAL "kitty"
 
 /* commands */
 static char dmenumon[2] = "0"; 
 static const char *dmenucmd[] = { "sh", "-c", "j4-dmenu-desktop --dmenu='dmenu -m \"$0\"' --term=" TERMINAL, dmenumon, NULL };
 static const char *clipcmd[]      = SHCMD("greenclip print | dmenu -s -l 20 -p 'Clipboard' | xargs -r -d'\\n' -I '{}' greenclip print '{}'");
-static const char *browsercmd[]   = { "qutebrowser-profile", "--menu", "dmenu", NULL };
+static const char *browsercmd[]   = { "qbpm", "choose", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
 static const char *filescmd[]     = { "pcmanfm-qt", NULL };
 static const char *emacscmd[]     = { "emacsclient", "-c", NULL };
