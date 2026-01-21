@@ -15,3 +15,5 @@ emacsclient -e '(my/reload-xresources-theme)' &
 # update firefox colors
 pywalfox update &
 
+# update kitty colors
+pkill -SIGUSR1 kitty
