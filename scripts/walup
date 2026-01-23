@@ -17,3 +17,10 @@ pywalfox update &
 
 # update kitty colors
 pkill -SIGUSR1 kitty
+
+# update dunst colors
+pkill dunst &
+dunst & disown
+
+# update qute-reload colors
+qute-reload &
