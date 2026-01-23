@@ -1,45 +1,32 @@
 #!/bin/sh
 
-# Handle clicks from dwmblocks
+# Prints the current volume or mute if muted.
+
 case $BLOCK_BUTTON in
-    1) setsid -w -f kitty -e pavucontrol; pkill -RTMIN+10 "${STATUSBAR:-dwmblocks}" ;;
-    2) wpctl set-mute @DEFAULT_SINK@ toggle ;;
-    4) wpctl set-volume @DEFAULT_SINK@ 1%+ ;;
-    5) wpctl set-volume @DEFAULT_SINK@ 1%- ;;    3) notify-send "Volume module" "󰕾 Shows volume, 󰝟 if muted.
+	1) setsid -w -f pavucontrol; pkill -RTMIN+10 "${STATUSBAR:-dwmblocks}" ;;
+	2) wpctl set-mute @DEFAULT_SINK@ toggle ;;
+	4) wpctl set-volume @DEFAULT_SINK@ 1%+ ;;
+	5) wpctl set-volume @DEFAULT_SINK@ 1%- ;;
+	3) notify-send "Volume module" "\- Shows volume, mute if muted.
 - Middle click to mute.
 - Scroll to change." ;;
-    6) setsid -f kitty -e "$EDITOR" "$0" ;;
+	6) setsid -f kitty -e "$EDITOR" "$0" ;;
 esac
 
-vol_raw="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
+vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@)"
 
-# 1. Handle Muted State
-if [ "$vol_raw" != "${vol_raw%\[MUTED\]}" ]; then
-    echo "󰝟 Mute"
-    exit
-fi
+# If muted, print mute and exit.
+[ "$vol" != "${vol%\[MUTED\]}" ] && echo mute && exit
 
-# 2. Extract and Format Volume
-vol_num="${vol_raw#Volume: }"
+vol="${vol#Volume: }"
 
 split() {
-    IFS=$2
-    set -- $1
-    printf '%s' "$@"
+	# For ommiting the . without calling and external program.
+	IFS=$2
+	set -- $1
+	printf '%s' "$@"
 }
 
-# Convert decimal (e.g., 0.50) to percentage (50)
-vol="$(printf "%.0f" "$(split "$vol_num" ".")")"
+vol="$(printf "%.0f" "$(split "$vol" ".")")"
 
-# 3. Icon Logic based on Volume Level
-if [ "$vol" -ge 70 ]; then
-    icon="󰕾" # High volume
-elif [ "$vol" -ge 30 ]; then
-    icon="󰖀" # Medium volume
-elif [ "$vol" -gt 0 ]; then
-    icon="󰕿" # Low volume
-else
-    icon="󰝟" # Zero volume
-fi
-
-echo "$icon $vol%"
+echo "$vol%"

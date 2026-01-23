@@ -4,8 +4,8 @@
 case $BLOCK_BUTTON in
     1) nm-dmenu --config ~/.config/networkmanager-dmenu/config-dmenu.ini &  ;; # Left Click: Open Manager
     2) nmcli radio wifi $(nmcli radio wifi | grep -q "enabled" && echo "off" || echo "on") ;; # Middle Click: Toggle Wifi
-    3) notify-send "Network Status" "󰤨 Wifi | 󰈀 Eth" ;; # Right Click: Help
-    4|5) pkill -RTMIN+5 dwmblocks ;; # Scroll: Force Refresh
+    3) notify-send "Network Status" "[W]: Wifi | [E]: Eth | [V]: VPN" ;; # Right Click: Help
+    4|5) pkill -RTMIN+4 dwmblocks ;; # Scroll: Force Refresh
 esac
 
 # 1. Wifi Status & Strength
@@ -14,26 +14,18 @@ wifi_on=$(nmcli -g WIFI r)
 if [ "$wifi_on" = "enabled" ]; then
     # Get signal of active (*) connection
     wifi_sig=$(nmcli -t -f IN-USE,SIGNAL dev wifi | grep '^\*' | cut -d: -f2)
-    
     if [ -n "$wifi_sig" ]; then
-        # Standard Wi-Fi Bar Icons (Nerd Font / Material Design)
-        if [ "$wifi_sig" -ge 80 ]; then icon="󰤨 ";   # 4 bars
-        elif [ "$wifi_sig" -ge 60 ]; then icon="󰤥 "; # 3 bars
-        elif [ "$wifi_sig" -ge 40 ]; then icon="󰤢 "; # 2 bars
-        elif [ "$wifi_sig" -ge 20 ]; then icon="󰤟 "; # 1 bar
-        else icon="󰤯 "; fi                          # 0 bars / Dot
-        
-        wifiicon="$icon ${wifi_sig}%"
+        wifiicon="[W] ${wifi_sig}%"
     else
-        wifiicon="󰤮 " # Wifi on but disconnected
+        wifiicon="[-]"
     fi
 else
-    wifiicon="󰀝 " # Airplane mode / Wifi Off
+    wifiicon="[X]"
 fi
 
 # 2. Ethernet Status
 if nmcli -t -f TYPE,STATE dev | grep -q "^ethernet:connected"; then
-    ethericon=" 󰈀"
+    ethericon=" [E]"
 else
     ethericon=""
 fi
