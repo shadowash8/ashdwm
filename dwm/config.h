@@ -49,7 +49,7 @@ static const char *const autostart[] = {
 	/* 4. Screen Lock & Power */
     "xset", "s", "300", NULL,
     /* 2. Lock the screen AND turn off the monitor when the timer hits */
-    "xss-lock", "-l", "--", "sh", "-c", "i3lock && xset dpms force off", NULL,
+    "xss-lock", "-l", "--", "slock", NULL,
 
 	/* 5. Gsettings (Theme forcing) */
 	"sh", "-c", "gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'", NULL,
@@ -196,7 +196,7 @@ static const char *ocrcmd[] = SHCMD("maim -s /tmp/ocr.png && tesseract /tmp/ocr.
 static const char *colpickcmd[] = SHCMD("screenshot color");
 
 /* hardware commands */
-static const char *lockcmd[]     = SHCMD("XSECURELOCK_SHOW_DATETIME=1 xsecurelock");
+static const char *lockcmd[]     = SHCMD("slock");
 static const char *mutecmd[]     = SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+4 dwmblocks");
 static const char *volupcmd[]    = SHCMD("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+4 dwmblocks");
 static const char *voldowncmd[]  = SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+4 dwmblocks");
