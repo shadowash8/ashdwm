@@ -101,7 +101,7 @@ static char *colors[][3] = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const int taglayouts[] = { 0, 2, 5, 1, 11, 9, 0, 0, 0 };
+static const int taglayouts[] = { 11, 2, 5, 1, 6, 13, 0, 0, 0 };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -173,7 +173,7 @@ ResourcePref resources[] = {
 
 /* helper for spawning shell commands */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "kitty"
+#define TERMINAL "st"
 
 /* commands */
 static char dmenumon[2] = "0"; 
