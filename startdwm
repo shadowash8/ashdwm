@@ -1,5 +1,7 @@
+#!/bin/sh
 # Inherit vars
-. ~/.zprofile
+. ~/.shellprofile
+export PATH="$HOME/.ashdwm/scripts:$PATH"
 
 # ENV Vars
 export QT_QPA_PLATFORM="xcb"
