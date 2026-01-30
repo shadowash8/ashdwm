@@ -1,19 +1,27 @@
-From f58c7e4fd05ec13383518ccd51663167d45e92d0 Mon Sep 17 00:00:00 2001
-From: Daniel Bylinka <daniel.bylinka@gmail.com>
-Date: Fri, 2 Apr 2021 19:02:58 +0200
-Subject: [PATCH] [statuscmd] Signal mouse button and click location to status
- monitor
+From ca2a2e6386a746ebfc3480787e5d99da11e7abee Mon Sep 17 00:00:00 2001
+From: Justinas Grigas <dev@jstnas.com>
+Date: Wed, 9 Oct 2024 01:00:20 +0100
+Subject: [PATCH] [dwm][statuscmd] better click regions
 
+The main improvement of this patch over the previous version 20210405 is that
+the click region now ends on a matching signal raw byte.
+
+The matching byte is optional, and without it dwm will behave as before.
+
+To take advantage of this feature, scripts need to be modified to print the raw
+byte at the end as well.
+
+In addition, this patch cleanly applies onto master branch.
 ---
- config.def.h |   6 +++-
- dwm.c        | 100 ++++++++++++++++++++++++++++++++++++++++++++++++---
- 2 files changed, 100 insertions(+), 6 deletions(-)
+ config.def.h |   6 ++-
+ dwm.c        | 104 ++++++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 104 insertions(+), 6 deletions(-)
 
 diff --git a/config.def.h b/config.def.h
-index 1c0b587..154a59b 100644
+index 9efa774..d008275 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -54,6 +54,8 @@ static const Layout layouts[] = {
+@@ -55,6 +55,8 @@ static const Layout layouts[] = {
  /* helper for spawning shell commands in the pre dwm-5.0 fashion */
  #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
  
@@ -22,7 +30,7 @@ index 1c0b587..154a59b 100644
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
  static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-@@ -103,7 +105,9 @@ static Button buttons[] = {
+@@ -104,7 +106,9 @@ static const Button buttons[] = {
  	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
  	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
  	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
@@ -34,10 +42,10 @@ index 1c0b587..154a59b 100644
  	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
  	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 diff --git a/dwm.c b/dwm.c
-index b0b3466..d871457 100644
+index 1443802..94ee0c7 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -172,6 +172,7 @@ static void focusstack(const Arg *arg);
+@@ -171,6 +171,7 @@ static void focusstack(const Arg *arg);
  static Atom getatomprop(Client *c, Atom prop);
  static int getrootptr(int *x, int *y);
  static long getstate(Window w);
@@ -45,15 +53,15 @@ index b0b3466..d871457 100644
  static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
  static void grabbuttons(Client *c, int focused);
  static void grabkeys(void);
-@@ -206,6 +207,7 @@ static void setup(void);
+@@ -204,6 +205,7 @@ static void setmfact(const Arg *arg);
+ static void setup(void);
  static void seturgent(Client *c, int urg);
  static void showhide(Client *c);
- static void sigchld(int unused);
 +static void sigstatusbar(const Arg *arg);
  static void spawn(const Arg *arg);
  static void tag(const Arg *arg);
  static void tagmon(const Arg *arg);
-@@ -238,6 +240,9 @@ static void zoom(const Arg *arg);
+@@ -236,6 +238,9 @@ static void zoom(const Arg *arg);
  /* variables */
  static const char broken[] = "broken";
  static char stext[256];
@@ -62,7 +70,7 @@ index b0b3466..d871457 100644
 +static pid_t statuspid = -1;
  static int screen;
  static int sw, sh;           /* X display screen geometry width, height */
- static int bh, blw = 0;      /* bar geometry */
+ static int bh;               /* bar height */
 @@ -422,6 +427,7 @@ buttonpress(XEvent *e)
  	Client *c;
  	Monitor *m;
@@ -71,9 +79,9 @@ index b0b3466..d871457 100644
  
  	click = ClkRootWin;
  	/* focus monitor if necessary */
-@@ -440,9 +446,23 @@ buttonpress(XEvent *e)
+@@ -440,9 +446,27 @@ buttonpress(XEvent *e)
  			arg.ui = 1 << i;
- 		} else if (ev->x < x + blw)
+ 		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
 -		else if (ev->x > selmon->ww - (int)TEXTW(stext))
 +		else if (ev->x > selmon->ww - statusw) {
@@ -90,14 +98,18 @@ index b0b3466..d871457 100644
 +					text = s + 1;
 +					if (x >= ev->x)
 +						break;
-+					statussig = ch;
++					/* reset on matching signal raw byte */
++					if (ch == statussig)
++						statussig = 0;
++					else
++						statussig = ch;
 +				}
 +			}
 +		} else
  			click = ClkWinTitle;
  	} else if ((c = wintoclient(ev->window))) {
  		focus(c);
-@@ -704,9 +724,24 @@ drawbar(Monitor *m)
+@@ -708,9 +732,24 @@ drawbar(Monitor *m)
  
  	/* draw status first so it can be overdrawn by tags later */
  	if (m == selmon) { /* status is only drawn on selected monitor */
@@ -124,7 +136,7 @@ index b0b3466..d871457 100644
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -872,6 +907,30 @@ getatomprop(Client *c, Atom prop)
+@@ -876,6 +915,30 @@ getatomprop(Client *c, Atom prop)
  	return atom;
  }
  
@@ -155,8 +167,8 @@ index b0b3466..d871457 100644
  int
  getrootptr(int *x, int *y)
  {
-@@ -1637,6 +1696,20 @@ sigchld(int unused)
- 	while (0 < waitpid(-1, NULL, WNOHANG));
+@@ -1643,6 +1706,20 @@ showhide(Client *c)
+ 	}
  }
  
 +void
@@ -176,7 +188,7 @@ index b0b3466..d871457 100644
  void
  spawn(const Arg *arg)
  {
-@@ -1990,8 +2063,25 @@ updatesizehints(Client *c)
+@@ -2004,8 +2081,25 @@ updatesizehints(Client *c)
  void
  updatestatus(void)
  {
@@ -204,5 +216,5 @@ index b0b3466..d871457 100644
  }
  
 -- 
-2.31.0
+2.46.2
 

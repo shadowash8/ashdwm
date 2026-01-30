@@ -10,7 +10,7 @@ export XSECURELOCK_SHOW_DATETIME=1
 export XSECURELOCK_PASSWORD_PROMPT=asterisks
 
 setxkbmap us -variant colemak_dh &
-wal -R &
+~/.ashdwm/autostart.sh
 
 exec ssh-agent zsh -c '
 while :; do

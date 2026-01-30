@@ -3,6 +3,9 @@
 # update bg
 feh --bg-fill $(cat ~/.cache/wal/wal) &
 
+# update xrdb
+xrdb -load ~/.Xresources
+
 # update dwm
 xdotool key --clearmodifiers super+control+shift+q
 
