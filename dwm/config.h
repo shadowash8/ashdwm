@@ -7,7 +7,7 @@ static unsigned int borderpx  = 2;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static char font[]            = "Iosevka:pixelsize=16:antialias=true:autohint=true";
+static char font[]            = "Iosevka:pixelsize=14:antialias=true:autohint=true";
 static const char *fonts[]          = { font };
 static char dmenufont[]       = "monospace:size=10";
 
@@ -141,9 +141,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 
 	/* --- Master Area --- */
-	{ MODKEY,                       XK_z,      incnmaster,     {.i = +1 } }, // More windows in master
+	{ MODKEY,                       XK_z,      zoom,           {0} },        // Push window to master
+	{ MODKEY|ShiftMask,             XK_z,      incnmaster,     {.i = +1 } }, // More windows in master
 	{ MODKEY|ControlMask,           XK_z,      incnmaster,     {.i = -1 } }, // Fewer windows in master
-	{ MODKEY|ShiftMask,             XK_z,      zoom,           {0} },        // Push window to master
 
     /* --- Layouts --- */
 	{ MODKEY|ShiftMask|ControlMask, XK_h,      setlayout,      {.v = &layouts[0]} },
