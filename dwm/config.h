@@ -119,9 +119,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = clipcmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
-	{ MODKEY,                       XK_f,      spawn,          {.v = filescmd } },
+	{ MODKEY,                       XK_e,      spawn,          {.v = filescmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
-	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
+	{ MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = phonecmd } },
 	{ MODKEY,                       XK_m,      spawn,          {.v = musiccmd } },
 	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = websearchcmd } },
@@ -131,13 +131,13 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 
     /* --- Navigation --- */
-	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } }, // Next window
-	{ MODKEY,                       XK_o,      focusstack,     {.i = -1 } }, // Prev window
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, // Next window
+	{ MODKEY,                       XK_semicolon,focusstack,     {.i = -1 } }, // Prev window
 	{ MODKEY,                       XK_x,      togglebar,      {0} },
  
     /* --- Resizing --- */
-	{ MODKEY,                       XK_e,      setmfact,       {.f = -0.05} }, // Shrink master
-	{ MODKEY,                       XK_i,      setmfact,       {.f = +0.05} }, // Grow master
+	{ MODKEY,                       XK_k,      setmfact,       {.f = -0.05} }, // Shrink master
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} }, // Grow master
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 
 	/* --- Master Area --- */
@@ -172,10 +172,10 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 
     /* --- Screenshot --- */
-    { 0,                    XK_Print,  spawn,          {.v = shotcpycmd } },
-    { ControlMask,          XK_Print,  spawn,          {.v = shotsavecmd } },
-    { ShiftMask,            XK_Print,  spawn,          {.v = ocrcmd } },
-    { ControlMask|ShiftMask,XK_Print,  spawn,          {.v = colpickcmd } },
+    { 0,                            XK_Print,  spawn,          {.v = shotcpycmd } },
+    { ControlMask,                  XK_Print,  spawn,          {.v = shotsavecmd } },
+    { ShiftMask,                    XK_Print,  spawn,          {.v = ocrcmd } },
+    { ControlMask|ShiftMask,        XK_Print,  spawn,          {.v = colpickcmd } },
 
     /* --- Hardware Keys --- */
 	{ 0,             XF86XK_AudioMute,         spawn,          {.v = mutecmd } },

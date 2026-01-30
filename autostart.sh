@@ -7,6 +7,7 @@ picom &
 dunst &
 dwmblocks &
 
+emacs-lucid --daemon &
 greenclip daemon &
 xset s 300 &
 xss-lock -l -- slock &
