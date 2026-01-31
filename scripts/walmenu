@@ -1,32 +1,32 @@
 #!/usr/bin/env bash
 
-# slightly scuffed wallpaper picker menu for use with pywal - uses nsxiv if installed, otherwise uses dmenu
+FOLDER=~/Pictures/Wallpapers
+SCRIPT=~/.ashdwm/scripts/walup
 
-FOLDER=~/Pictures/Wallpapers # wallpaper folder
-SCRIPT=~/.ashdwm/scripts/walup # script to run after wal for refreshing programs, etc.
+# 1. Select the Wallpaper
+if command -v nsxiv >/dev/null; then 
+    WALLPAPER=$(nsxiv -otb "$FOLDER"/*)
+else 
+    CHOICE=$(command ls -v "$FOLDER" | rofi -dmenu -c -l 15 -i -p "Wallpaper: ")
+    [ -z "$CHOICE" ] && exit 0
+    WALLPAPER="$FOLDER/$CHOICE"
+fi
 
+[ -z "$WALLPAPER" ] && exit 0
 
-menu () {
-		if command -v nsxiv >/dev/null; then 
-				CHOICE=$(nsxiv -otb $FOLDER/*)
-		else 
-				CHOICE=$(echo -e "Random\n$(command ls -v $FOLDER)" | dmenu -c -l 15 -i -p "Wallpaper: ")
-		fi
+# 2. Attempt standard generation
+# If this fails (exit code != 0), the block after '||' executes
+if ! wal -i "$WALLPAPER" -o "$SCRIPT" 2>/dev/null; then
+    
+    # 3. Fix: The Theme Picker
+    # We filter specifically for the theme names to avoid the [E] theme error
+    THEMES=$(wal --theme | grep -E '^ - ' | sed 's/ - //g' | sed 's/ (.*//g' | sort)
+    
+    # Open dmenu; if you pick one, it applies it to that wallpaper
+    SELECTED_THEME=$(echo "$THEMES" | rofi -dmenu -c -l 20 -s -p "Gen Failed. Pick Theme:")
 
-case $CHOICE in
-		Random) wal -i "$FOLDER" -o $SCRIPT ;; # dmenu random option
-		*.*) wal -i "$CHOICE" -o $SCRIPT ;;
-		*) exit 0 ;;
-esac
-}
-
-# If given arguments:
-# First argument will be used by pywal as wallpaper/dir path
-# Second will be used as theme (use wal --theme to view built-in themes)
-
-case "$#" in
-		0) menu ;;
-		1) wal -i "$1" -o $SCRIPT ;;
-		2) wal -i "$1" --theme $2 -o $SCRIPT ;;
-		*) exit 0 ;;
-esac
+    if [ -n "$SELECTED_THEME" ]; then
+        # The fix: Ensure no leading/trailing spaces in $SELECTED_THEME
+        wal -i "$WALLPAPER" --theme "$SELECTED_THEME" -o "$SCRIPT"
+    fi
+fi
