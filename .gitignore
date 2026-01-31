@@ -1,0 +1,10 @@
+# Build products
+*.o
+*.rej
+*.orig
+dwm/dwm
+st/st
+dmenu/dmenu
+dmenu/stest
+slock/slock
+
