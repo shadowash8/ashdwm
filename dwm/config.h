@@ -118,7 +118,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = clipcmd } },
-	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = filescmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
 	{ MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
@@ -141,9 +141,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 
 	/* --- Master Area --- */
-	{ MODKEY,                       XK_z,      zoom,           {0} },        // Push window to master
-	{ MODKEY|ShiftMask,             XK_z,      incnmaster,     {.i = +1 } }, // More windows in master
-	{ MODKEY|ControlMask,           XK_z,      incnmaster,     {.i = -1 } }, // Fewer windows in master
+	{ MODKEY,                       XK_b,      zoom,           {0} },        // Push window to master
+	{ MODKEY|ShiftMask,             XK_b,      incnmaster,     {.i = +1 } }, // More windows in master
+	{ MODKEY|ControlMask,           XK_b,      incnmaster,     {.i = -1 } }, // Fewer windows in master
 
     /* --- Layouts --- */
 	{ MODKEY|ShiftMask|ControlMask, XK_h,      setlayout,      {.v = &layouts[0]} },
@@ -152,7 +152,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_h,      setlayout,      {0} },
     { MODKEY,                       XK_g,      togglefloating, {0} },
     { MODKEY,                       XK_a,      togglefullscr,  {0} },
-    { MODKEY,                       XK_s,      togglesticky,   {0} },
+    { MODKEY,                       XK_d,      togglesticky,   {0} },
 
     /* --- Monitor Focus --- */
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
