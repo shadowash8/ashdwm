@@ -10,8 +10,6 @@ export QT_QPA_PLATFORMTHEME="qt6ct"
 setxkbmap us &
 ~/.ashdwm/autostart.sh
 
-exec ssh-agent zsh -c '
 while :; do
     dwm 2> ~/.dwm.log || break
 done
-'
