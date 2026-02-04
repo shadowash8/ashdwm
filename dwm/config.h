@@ -96,6 +96,7 @@ static const char *websearchcmd[] = SHCMD("websearch");
 static const char *notescmd[] = SHCMD("notes");
 static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
 static const char *wallpapercmd[]     = { "walmenu", NULL };
+static const char *exitdwmcmd[]     = { "pkill", "Xorg", NULL };
 
 /* screenshot commands */
 static const char *shotcpycmd[]  = SHCMD("maim -s | xclip -selection clipboard -t image/png && notify-send 'Screenshot' 'Copied to Clipboard' -i camera-photo");
@@ -129,6 +130,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_space,  spawn,          {.v = wallpapercmd } },
     { MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
+	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
 
     /* --- Navigation --- */
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, // Next window
