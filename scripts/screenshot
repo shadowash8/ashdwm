@@ -33,7 +33,6 @@ post(){
             "$FILE"
     }
     xclip -selection clipboard -t image/png -i "$FILE" && notify-send -i "$FILE" "Screenshot: $(basename "$FILE")"
-    command -v imgcliphist && imgcliphist add
 }
 
 colorpicker(){ 
