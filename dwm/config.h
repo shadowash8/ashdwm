@@ -7,7 +7,7 @@ static unsigned int borderpx  = 2;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static char font[]            = "Iosevka:pixelsize=14:antialias=true:autohint=true";
+static char font[]            = "SF Mono:pixelsize=14:antialias=true:autohint=true";
 static const char *fonts[]          = { font };
 static char dmenufont[]       = "monospace:size=10";
 
@@ -81,15 +81,15 @@ ResourcePref resources[] = {
 
 /* helper for spawning shell commands */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "st"
+#define TERMINAL "kitty"
 
 /* commands */
 static char dmenumon[2] = "0"; 
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 static const char *clipcmd[]      = SHCMD("greenclip print | rofi -dmenu | xargs -r -d'\\n' -I '{}' greenclip print '{}'");
-static const char *browsercmd[]   = { "qbpm", "choose", NULL };
+static const char *browsercmd[]   = { "firefox", NULL };
 static const char *termcmd[]      = { TERMINAL, NULL };
-static const char *filescmd[]     = { "pcmanfm-qt", NULL };
+static const char *filescmd[]     = { "thunar", NULL };
 static const char *emacscmd[]     = { "emacsclient", "-c", NULL };
 static const char *phonecmd[]     = SHCMD("connect");
 static const char *websearchcmd[] = SHCMD("websearch");
