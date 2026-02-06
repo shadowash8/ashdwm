@@ -14,3 +14,5 @@ dwmblocks &
 greenclip daemon &
 xset s 300 &
 xss-lock -l -- slock &
+
+setxkbmap us -variant colemak_dh 

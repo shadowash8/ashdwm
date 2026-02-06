@@ -81,7 +81,7 @@ ResourcePref resources[] = {
 
 /* helper for spawning shell commands */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "kitty"
+#define TERMINAL "st"
 
 /* commands */
 static char dmenumon[2] = "0"; 
@@ -119,10 +119,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = clipcmd } },
-	{ MODKEY,                       XK_t,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_e,      spawn,          {.v = filescmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
-	{ MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
+	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = phonecmd } },
 	{ MODKEY,                       XK_m,      spawn,          {.v = musiccmd } },
 	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = websearchcmd } },
