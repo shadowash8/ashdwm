@@ -22,6 +22,6 @@
     X("", "sb-network", 20, 5) \
     X("[V] ", "sb-volume", 1, 4) \
     X("[B] ", "sb-battery", 30, 3) \
-    X("[D] ", "date '+%a %b %d %I:%M %p'", 30, 1) \
+    X("[D] ", "sb-date", 30, 1) \
 
 #endif  // CONFIG_H
