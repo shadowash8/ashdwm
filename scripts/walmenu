@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FOLDER=~/Pictures/Wallpapers
+FOLDER=~/pics/wals
 SCRIPT=~/.ashdwm/scripts/walup
 
 # 1. Select the Wallpaper
