@@ -6,12 +6,11 @@ export PATH="$HOME/.ashdwm/scripts:$PATH"
 # ENV Vars
 export QT_QPA_PLATFORM="xcb"
 export QT_QPA_PLATFORMTHEME="qt6ct"
-export XDG_CURRENT_DESKTOP=LXQt
-export XDG_MENU_PREFIX=lxqt-
+export XDG_CURRENT_DESKTOP=AshDWM
 
-setxkbmap us &
+setxkbmap us -variant colemak_dh 
 ~/.ashdwm/autostart.sh
 
 while :; do
-    dbus-run-session dwm 2> ~/.dwm.log || break
+    dwm 2> ~/.dwm.log || break
 done

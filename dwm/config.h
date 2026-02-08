@@ -81,21 +81,9 @@ ResourcePref resources[] = {
 
 /* helper for spawning shell commands */
 #define SHCMD(cmd) { "sh", "-c", cmd, NULL }
-#define TERMINAL "st"
-
-/* commands */
 static char dmenumon[2] = "0"; 
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
-static const char *clipcmd[]      = SHCMD("greenclip print | rofi -dmenu | xargs -r -d'\\n' -I '{}' greenclip print '{}'");
-static const char *browsercmd[]   = { "firefox", NULL };
-static const char *termcmd[]      = { TERMINAL, NULL };
-static const char *filescmd[]     = { "thunar", NULL };
-static const char *emacscmd[]     = { "emacsclient", "-c", NULL };
-static const char *phonecmd[]     = SHCMD("connect");
-static const char *websearchcmd[] = SHCMD("websearch");
-static const char *notescmd[] = SHCMD("notes");
-static const char *musiccmd[]     = { TERMINAL, "-e", "rmpc", NULL };
-static const char *wallpapercmd[]     = { "walmenu", NULL };
+
 static const char *exitdwmcmd[]     = { "pkill", "Xorg", NULL };
 
 /* screenshot commands */
@@ -106,28 +94,16 @@ static const char *colpickcmd[] = SHCMD("screenshot color");
 
 /* hardware commands */
 static const char *lockcmd[]     = SHCMD("slock");
-static const char *mutecmd[]     = SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+4 dwmblocks");
-static const char *volupcmd[]    = SHCMD("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+4 dwmblocks");
-static const char *voldowncmd[]  = SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+4 dwmblocks");
-static const char *briup[]       = SHCMD("brightnessctl set 10%+");
-static const char *bridown[]     = SHCMD("brightnessctl set 10%-");
+static const char *mutecmd[]    = SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+4 dwmblocks; notify-send -h string:x-dunst-stack-tag:vol \"$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q 'MUTED' && echo 'Muted' || echo 'Unmuted')\"");
+static const char *volupcmd[]   = SHCMD("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+4 dwmblocks; notify-send -h string:x-dunst-stack-tag:vol -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}') \"Volume: $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')%\"");
+static const char *voldowncmd[] = SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+4 dwmblocks; notify-send -h string:x-dunst-stack-tag:vol -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}') \"Volume: $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')%\"");
+static const char *briup[]      = SHCMD("brightnessctl set 10%+; notify-send -h string:x-dunst-stack-tag:bri -h int:value:$(brightnessctl -m | cut -d, -f4 | tr -d '%') \"Brightness: $(brightnessctl -m | cut -d, -f4)\"");
+static const char *bridown[]    = SHCMD("brightnessctl set 10%-; notify-send -h string:x-dunst-stack-tag:bri -h int:value:$(brightnessctl -m | cut -d, -f4 | tr -d '%') \"Brightness: $(brightnessctl -m | cut -d, -f4)\"");
 
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	/* --- Launchers --- */
-	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_v,      spawn,          {.v = clipcmd } },
-	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
-	{ MODKEY,                       XK_f,      spawn,          {.v = filescmd } },
-	{ MODKEY,                       XK_w,      spawn,          {.v = emacscmd } },
-	{ MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
-	{ MODKEY,                       XK_p,      spawn,          {.v = phonecmd } },
-	{ MODKEY,                       XK_m,      spawn,          {.v = musiccmd } },
-	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = websearchcmd } },
-	{ MODKEY|ShiftMask,             XK_space,  spawn,          {.v = notescmd } },
-	{ MODKEY|ControlMask,           XK_space,  spawn,          {.v = wallpapercmd } },
+    { MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
     { MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
