@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# A simple toggle script for screen locking
+# Dependencies: xset, xss-lock, slock
+
+on() {
+    # Silently kill xss-lock if it's running
+    pkill xss-lock 2>/dev/null
+    
+    # Disable X server screen saver timers
+    xset s off
+    xset -dpms
+    
+    echo "☕ Awake mode: ON (Screen will stay on)"
+}
+
+off() {
+    # Ensure we don't start duplicate processes
+    pkill xss-lock 2>/dev/null
+    
+    # Re-enable X server screen saver (300 seconds)
+    xset s 300
+    xset +dpms
+    
+    # Start the locker in the background
+    xss-lock -l -- slock &
+    
+    echo "🌙 Awake mode: OFF (Screen will lock in 5 mins)"
+}
+
+case "$1" in
+    on)  on ;;
+    off) off ;;
+    *)   echo "Usage: awake {on|off}" ;;
+esac
+
