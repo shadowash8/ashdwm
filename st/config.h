@@ -3,7 +3,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "SF Mono:pixelsize=16:antialias=true:autohint=true";
+static char *font = "monospace:pixelsize=16:antialias=true:autohint=true";
 static int borderpx = 10;
 
 static char *shell = "/bin/sh";
@@ -149,8 +149,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
     { ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
-	{ TERMMOD,              XK_E,           kscrollup,      {.i = 5} },
-	{ TERMMOD,              XK_N,           kscrolldown,    {.i = 5} },
+	{ TERMMOD,              XK_K,           kscrollup,      {.i = 5} },
+	{ TERMMOD,              XK_J,           kscrolldown,    {.i = 5} },
 };
 
 /*
