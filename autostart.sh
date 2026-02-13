@@ -11,6 +11,5 @@ dunst &
 dwmblocks &
 
 greenclip daemon &
-emacs --daemon &
 
 awake off

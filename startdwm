@@ -8,7 +8,6 @@ export QT_QPA_PLATFORM="xcb"
 export QT_QPA_PLATFORMTHEME="qt6ct"
 export XDG_CURRENT_DESKTOP=AshDWM
 
-setxkbmap us -variant colemak_dh 
 ~/.ashdwm/autostart.sh
 
 while :; do
