@@ -6,10 +6,10 @@
 static unsigned int borderpx  = 2;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
-static int topbar             = 1;        /* 0 means bottom bar */
-static char font[]            = "SF Mono:pixelsize=14:antialias=true:autohint=true";
+static int topbar             = 0;        /* 0 means bottom bar */
+static char font[]            = "sans:pixelsize=14:antialias=true:autohint=true";
 static const char *fonts[]          = { font };
-static char dmenufont[]       = "monospace:size=10";
+static char dmenufont[]       = "sans:pixelsize=14:antialias=true:autohint=true";
 
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -93,35 +93,35 @@ static const char *ocrcmd[] = SHCMD("maim -s /tmp/ocr.png && tesseract /tmp/ocr.
 static const char *colpickcmd[] = SHCMD("screenshot color");
 
 /* hardware commands */
-static const char *lockcmd[]     = SHCMD("slock");
-static const char *mutecmd[]    = SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+4 dwmblocks; notify-send -h string:x-dunst-stack-tag:vol \"$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q 'MUTED' && echo 'Muted' || echo 'Unmuted')\"");
-static const char *volupcmd[]   = SHCMD("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+4 dwmblocks; notify-send -h string:x-dunst-stack-tag:vol -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}') \"Volume: $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')%\"");
-static const char *voldowncmd[] = SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+4 dwmblocks; notify-send -h string:x-dunst-stack-tag:vol -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}') \"Volume: $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2*100}')%\"");
-static const char *briup[]      = SHCMD("brightnessctl set 10%+; notify-send -h string:x-dunst-stack-tag:bri -h int:value:$(brightnessctl -m | cut -d, -f4 | tr -d '%') \"Brightness: $(brightnessctl -m | cut -d, -f4)\"");
-static const char *bridown[]    = SHCMD("brightnessctl set 10%-; notify-send -h string:x-dunst-stack-tag:bri -h int:value:$(brightnessctl -m | cut -d, -f4 | tr -d '%') \"Brightness: $(brightnessctl -m | cut -d, -f4)\"");
+static const char *lockcmd[]    = SHCMD("slock");
+static const char *volup[]      = { "osd", "volume", "5%+",      NULL };
+static const char *voldown[]    = { "osd", "volume", "5%-",      NULL };
+static const char *volmute[]    = { "osd", "volume", "toggle",   NULL };
+static const char *briup[]      = { "osd", "brightness", "10%+", NULL };
+static const char *bridown[]    = { "osd", "brightness", "10%-", NULL };
 
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-    { MODKEY,                       XK_l,      spawn,          {.v = lockcmd } },
+    { MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
     { MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
 
     /* --- Navigation --- */
-	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } }, // Next window
-	{ MODKEY,                       XK_e,      focusstack,     {.i = -1 } }, // Prev window
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, // Next window
+	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } }, // Prev window
 	{ MODKEY,                       XK_x,      togglebar,      {0} },
  
     /* --- Resizing --- */
-	{ MODKEY,                       XK_i,      setmfact,       {.f = -0.05} }, // Shrink master
-	{ MODKEY,                       XK_o,      setmfact,       {.f = +0.05} }, // Grow master
+	{ MODKEY,                       XK_l,      setmfact,       {.f = -0.05} }, // Shrink master
+	{ MODKEY,                       XK_semicolon,setmfact,       {.f = +0.05} }, // Grow master
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 
 	/* --- Master Area --- */
-	{ MODKEY,                       XK_z,      incnmaster,     {.i = +1 } }, // More windows in master
+	{ MODKEY,                       XK_z,      zoom,           {0} },        // Push window to master
+	{ MODKEY|ShiftMask,             XK_z,      incnmaster,     {.i = +1 } }, // More windows in master
 	{ MODKEY|ControlMask,           XK_z,      incnmaster,     {.i = -1 } }, // Fewer windows in master
-	{ MODKEY|ShiftMask,             XK_z,      zoom,           {0} },        // Push window to master
 
     /* --- Layouts --- */
 	{ MODKEY|ShiftMask|ControlMask, XK_h,      setlayout,      {.v = &layouts[0]} },
@@ -156,9 +156,9 @@ static const Key keys[] = {
     { ControlMask|ShiftMask,        XK_Print,  spawn,          {.v = colpickcmd } },
 
     /* --- Hardware Keys --- */
-	{ 0,             XF86XK_AudioMute,         spawn,          {.v = mutecmd } },
-	{ 0,             XF86XK_AudioLowerVolume,  spawn,          {.v = voldowncmd } },
-	{ 0,             XF86XK_AudioRaiseVolume,  spawn,          {.v = volupcmd } },
+	{ 0,             XF86XK_AudioMute,         spawn,          {.v = volmute } },
+	{ 0,             XF86XK_AudioLowerVolume,  spawn,          {.v = voldown } },
+	{ 0,             XF86XK_AudioRaiseVolume,  spawn,          {.v = volup } },
     { 0,             XF86XK_MonBrightnessUp,   spawn,          {.v = briup } },
     { 0,             XF86XK_MonBrightnessDown, spawn,          {.v = bridown } },
 };
