@@ -7,9 +7,9 @@ static unsigned int borderpx  = 2;        /* border pixel of windows */
 static unsigned int snap      = 32;       /* snap pixel */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 0;        /* 0 means bottom bar */
-static char font[]            = "sans:pixelsize=14:antialias=true:autohint=true";
+static char font[]            = "monospace:pixelsize=14:antialias=true:autohint=true";
 static const char *fonts[]          = { font };
-static char dmenufont[]       = "sans:pixelsize=14:antialias=true:autohint=true";
+static char dmenufont[]       = "monospace:pixelsize=14:antialias=true:autohint=true";
 
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -84,6 +84,7 @@ ResourcePref resources[] = {
 static char dmenumon[2] = "0"; 
 static const char *dmenucmd[] = { "rofi", "-show", "drun", NULL };
 
+static const char *clipboardcmd[]     = { "rofi", "-modi 'clipboard:greenclip print' -show clipboard", NULL };
 static const char *exitdwmcmd[]     = { "pkill", "Xorg", NULL };
 
 /* screenshot commands */
@@ -104,6 +105,8 @@ static const char *bridown[]    = { "osd", "brightness", "10%-", NULL };
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
     { MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
+    { MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
+    { MODKEY,                       XK_v,      spawn,          {.v = clipboardcmd } },
     { MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
