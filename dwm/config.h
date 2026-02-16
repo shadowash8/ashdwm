@@ -3,13 +3,18 @@
 #define STATUSBAR "dwmblocks"
 
 /* appearance */
-static unsigned int borderpx  = 2;        /* border pixel of windows */
-static unsigned int snap      = 32;       /* snap pixel */
-static int showbar            = 1;        /* 0 means no bar */
-static int topbar             = 0;        /* 0 means bottom bar */
-static char font[]            = "monospace:pixelsize=14:antialias=true:autohint=true";
+static unsigned int borderpx        = 2;        /* border pixel of windows */
+static unsigned int snap            = 32;       /* snap pixel */
+static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
+static int showbar                  = 1;        /* 0 means no bar */
+static int topbar                   = 1;        /* 0 means bottom bar */
+static char font[]                  = "monospace:pixelsize=14:antialias=true:autohint=true";
 static const char *fonts[]          = { font };
-static char dmenufont[]       = "monospace:pixelsize=14:antialias=true:autohint=true";
+static char dmenufont[]             = "monospace:pixelsize=14:antialias=true:autohint=true";
 
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
@@ -112,13 +117,13 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
 
     /* --- Navigation --- */
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, // Next window
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } }, // Prev window
-	{ MODKEY,                       XK_x,      togglebar,      {0} },
+	{ MODKEY,                       XK_h,      focusstack,     {.i = +1 } }, // Next window
+	{ MODKEY,                       XK_l,      focusstack,     {.i = -1 } }, // Prev window
+	{ MODKEY,                       XK_m,      togglebar,      {0} },
  
     /* --- Resizing --- */
-	{ MODKEY,                       XK_l,      setmfact,       {.f = -0.05} }, // Shrink master
-	{ MODKEY,                       XK_semicolon,setmfact,       {.f = +0.05} }, // Grow master
+	{ MODKEY,                       XK_j,      setmfact,       {.f = -0.05} }, // Shrink master
+	{ MODKEY,                       XK_k,      setmfact,       {.f = +0.05} }, // Grow master
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 
 	/* --- Master Area --- */
@@ -127,13 +132,32 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_z,      incnmaster,     {.i = -1 } }, // Fewer windows in master
 
     /* --- Layouts --- */
-	{ MODKEY|ShiftMask|ControlMask, XK_h,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ControlMask,           XK_h,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_h,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_h,      setlayout,      {0} },
+	{ MODKEY,                       XK_c,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_x,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_z,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_n,      setlayout,      {0} },
     { MODKEY,                       XK_g,      togglefloating, {0} },
     { MODKEY,                       XK_a,      togglefullscr,  {0} },
     { MODKEY,                       XK_s,      togglesticky,   {0} },
+
+    /* --- Vanity Gaps --- */
+    { MODKEY|Mod1Mask,              XK_h,      incrgaps,       {.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_l,      incrgaps,       {.i = -1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
+	{ MODKEY|Mod1Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
+	{ MODKEY|Mod1Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+	{ MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
+	{ MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
+	{ MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_y,      incrohgaps,     {.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_o,      incrohgaps,     {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
+
 
     /* --- Monitor Focus --- */
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
