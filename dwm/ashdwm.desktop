@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=dwm
+Comment=suckless dynamic window manager
+Exec=/usr/local/bin/startdwm
+Icon=dwm
+Type=XSession
