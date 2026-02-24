@@ -9,6 +9,7 @@ sxhkd &
 picom &
 dunst &
 dwmblocks &
+emacs --daemon &
 
 greenclip daemon &
 
