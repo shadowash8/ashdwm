@@ -117,13 +117,13 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
 
     /* --- Navigation --- */
-	{ MODKEY,                       XK_h,      focusstack,     {.i = +1 } }, // Next window
-	{ MODKEY,                       XK_l,      focusstack,     {.i = -1 } }, // Prev window
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, // Next window
+	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } }, // Prev window
 	{ MODKEY,                       XK_m,      togglebar,      {0} },
  
     /* --- Resizing --- */
-	{ MODKEY,                       XK_j,      setmfact,       {.f = -0.05} }, // Shrink master
-	{ MODKEY,                       XK_k,      setmfact,       {.f = +0.05} }, // Grow master
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} }, // Shrink master
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} }, // Grow master
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 
 	/* --- Master Area --- */
