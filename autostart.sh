@@ -1,10 +1,9 @@
 /usr/lib/xdg-desktop-portal-gtk &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
-wal -R
 xrdb -merge ~/.Xresources
 
-feh --bg-fill $(cat ~/.cache/wal/wal)
+feh --bg-fill $(cat ~/.cache/cwal/cwal)
 sxhkd &
 picom &
 dunst &

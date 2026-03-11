@@ -109,19 +109,19 @@ static const char *bridown[]    = { "osd", "brightness", "10%-", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-    { MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
-    { MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
-    { MODKEY,                       XK_v,      spawn,          {.v = clipboardcmd } },
-    { MODKEY,                       XK_q,      killclient,     {0} },
+  { MODKEY,                       XK_u,      spawn,          {.v = lockcmd } },
+  { MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
+  { MODKEY,                       XK_v,      spawn,          {.v = clipboardcmd } },
+  { MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = exitdwmcmd } },
 
-    /* --- Navigation --- */
+  /* --- Navigation --- */
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, // Next window
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } }, // Prev window
 	{ MODKEY,                       XK_m,      togglebar,      {0} },
  
-    /* --- Resizing --- */
+  /* --- Resizing --- */
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} }, // Shrink master
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} }, // Grow master
 	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -131,17 +131,17 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_b,      incnmaster,     {.i = +1 } }, // More windows in master
 	{ MODKEY|ControlMask,           XK_b,      incnmaster,     {.i = -1 } }, // Fewer windows in master
 
-    /* --- Layouts --- */
+  /* --- Layouts --- */
 	{ MODKEY,                       XK_z,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_x,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_c,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_n,      setlayout,      {0} },
-    { MODKEY,                       XK_g,      togglefloating, {0} },
-    { MODKEY,                       XK_a,      togglefullscr,  {0} },
-    { MODKEY,                       XK_s,      togglesticky,   {0} },
+  { MODKEY,                       XK_g,      togglefloating, {0} },
+  { MODKEY,                       XK_a,      togglefullscr,  {0} },
+  { MODKEY,                       XK_s,      togglesticky,   {0} },
 
-    /* --- Vanity Gaps --- */
-    { MODKEY|Mod1Mask,              XK_h,      incrgaps,       {.i = +1 } },
+  /* --- Vanity Gaps --- */
+  { MODKEY|Mod1Mask,              XK_h,      incrgaps,       {.i = +1 } },
 	{ MODKEY|Mod1Mask,              XK_l,      incrgaps,       {.i = -1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
@@ -176,18 +176,18 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
-    /* --- Screenshot --- */
-    { 0,                            XK_Print,  spawn,          {.v = shotcpycmd } },
-    { ControlMask,                  XK_Print,  spawn,          {.v = shotsavecmd } },
-    { ShiftMask,                    XK_Print,  spawn,          {.v = ocrcmd } },
-    { ControlMask|ShiftMask,        XK_Print,  spawn,          {.v = colpickcmd } },
+  /* --- Screenshot --- */
+  { 0,                            XK_Print,  spawn,          {.v = shotcpycmd } },
+  { ControlMask,                  XK_Print,  spawn,          {.v = shotsavecmd } },
+  { ShiftMask,                    XK_Print,  spawn,          {.v = ocrcmd } },
+  { ControlMask|ShiftMask,        XK_Print,  spawn,          {.v = colpickcmd } },
 
     /* --- Hardware Keys --- */
 	{ 0,             XF86XK_AudioMute,         spawn,          {.v = volmute } },
 	{ 0,             XF86XK_AudioLowerVolume,  spawn,          {.v = voldown } },
 	{ 0,             XF86XK_AudioRaiseVolume,  spawn,          {.v = volup } },
-    { 0,             XF86XK_MonBrightnessUp,   spawn,          {.v = briup } },
-    { 0,             XF86XK_MonBrightnessDown, spawn,          {.v = bridown } },
+  { 0,             XF86XK_MonBrightnessUp,   spawn,          {.v = briup } },
+  { 0,             XF86XK_MonBrightnessDown, spawn,          {.v = bridown } },
 };
 
 /* button definitions */
