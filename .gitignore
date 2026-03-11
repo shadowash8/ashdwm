@@ -2,9 +2,9 @@
 *.o
 *.rej
 *.orig
-dwm/dwm
-st/st
-dmenu/dmenu
-dmenu/stest
-slock/slock
-
+/slock/slock
+/slock/explicit_bzero.o
+/dwm/dwm.o
+/dwm/dwm
+/dmenu/dmenu
+/dmenu/dmenu.o
