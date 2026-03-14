@@ -84,7 +84,7 @@ diff --git a/startdwm b/startdwm
 index 7e706cb..63f51df 100755
 --- a/startdwm
 +++ b/startdwm
-@@ -8,9 +8,9 @@ export QT_QPA_PLATFORM="xcb"
+@@ -8,4 +8,5 @@ export QT_QPA_PLATFORM="xcb"
  export QT_QPA_PLATFORMTHEME="qt6ct"
  export XDG_CURRENT_DESKTOP=AshDWM
  
