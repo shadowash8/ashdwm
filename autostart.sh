@@ -3,6 +3,7 @@
 
 xrdb -merge ~/.Xresources
 
+setxkbmap us -variant colemak_dh
 feh --bg-fill $(cat ~/.cache/cwal/cwal)
 sxhkd &
 picom &
