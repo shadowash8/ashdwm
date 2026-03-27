@@ -120,7 +120,7 @@ static const Key keys[] = {
 	/* --- Navigation --- */
 	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } }, // Next window
 	{ MODKEY,                       XK_e,      focusstack,     {.i = -1 } }, // Prev window
-	{ MODKEY,                       XK_m,      togglebar,      {0} },
+	{ MODKEY|ControlMask,           XK_h,      togglebar,      {0} },
  
 	/* --- Resizing --- */
 	{ MODKEY,                       XK_m,      setmfact,       {.f = -0.05} }, // Shrink master
